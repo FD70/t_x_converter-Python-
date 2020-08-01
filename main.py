@@ -2,12 +2,18 @@
 import mp.VideoLoader
 
 
-# load by loader-downloader
-# input_videopath = mp.VideoLoader.download_video('youtube.com/url')
-videopath = mp.VideoLoader.download_video()
+def get_video_path(path=None, name=None):
+    # load by loader-downloader
+    # or already obtained video
+    # videopath = 'path/to/vid.mp4'
+    if not path or 'https:' in path:
+        return mp.VideoLoader.download_video(path, name)
+    else:
+        return path
 
-# or already obtained video
-# videopath = 'path/to/vid.mp4'
+
+videopath = get_video_path('здесь путь до видео')
+print(videopath)
 
 
 # directly convertation
