@@ -1,5 +1,5 @@
 # import all
-import mp.VideoLoader
+import mp.VideoLoader, mp.VideoConverter
 
 
 def get_video_path(path=None, name=None):
@@ -15,7 +15,8 @@ def get_video_path(path=None, name=None):
 videopath = get_video_path('здесь путь до видео')
 print(videopath)
 
-
 # directly convertation
+# convert
+
 
 # save output
