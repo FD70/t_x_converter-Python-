@@ -9,7 +9,7 @@ fourcc = cv2.VideoWriter_fourcc(*'XVID')
 X_OUT = 480
 Y_OUT = 640
 FPS_OUT = 60.0
-path_of_out_video = os.path.join(os.getcwd(), '../', 'output.avi')
+path_of_out_video = os.path.join(os.getcwd(), 'output.avi')
 # путь к исходному видеофайлу
 # direct_of_input_video = None
 
@@ -29,14 +29,14 @@ def get_array_video(video_input):
     #     arrays.append(numpy.array([]))
     #     print('{} created'.format(i))
     success, frame = video_input.read()
-    counter = 0
+    frame_counter = 0
     while success:
         array.append(frame)
         success, frame = video_input.read()
-        counter += 1
-        if not counter % 10:
-            print(counter)
-    print('get {} frames'.format(counter))
+        frame_counter += 1
+        if not frame_counter % 10:
+            print(frame_counter)
+    print('get {} frames'.format(frame_counter))
     return array
 
 
@@ -50,6 +50,7 @@ def replace_t_x(direct_of_input_video):
     # close input video
     vin.release()
 
+    # convert
     vout = take_v_writer()
     for y_index in range(vin_width):
         recordframe = video_array[0][0:vin_height, 0:1]
@@ -57,11 +58,10 @@ def replace_t_x(direct_of_input_video):
             recordframe = numpy.concatenate((recordframe, video_array[i][:, y_index:y_index + 1]), axis=1)
         resized = cv2.resize(recordframe, (Y_OUT, X_OUT))
         vout.write(resized)
+        print('{} of {}: {:.2f}%'.format(y_index + 1, vin_width, (y_index + 1)/vin_width*100))
     vout.release()
+    return path_of_out_video
 
 
-replace_t_x(os.path.join(os.getcwd(), '../', 'downloadname.mp4'))
-cv2.destroyAllWindows()
-
-# add process bar
-# add interface
+if __name__ == '__main__':
+    path_of_out_video = os.path.join(os.getcwd(), '../', 'output.avi')
