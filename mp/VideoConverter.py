@@ -6,8 +6,10 @@ import os
 # кодек, нужен для записи
 fourcc = cv2.VideoWriter_fourcc(*'XVID')
 # разрешение выходного видео
-X_OUT = 480
-Y_OUT = 640
+# X_OUT = 480
+# Y_OUT = 640
+X_OUT = 1080
+Y_OUT = 1920
 FPS_OUT = 60.0
 path_of_out_video = os.path.join(os.getcwd(), 'output.avi')
 # путь к исходному видеофайлу
