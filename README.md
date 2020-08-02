@@ -8,3 +8,6 @@ https://www.youtube.com/watch?v=cKOQoa-QJLk
 
 Сейчас есть **ограничение** на входное видео\
 Примерно 10/15 секунд для ***1080p***/***720p*** видео (30 fps)
+
+Идея вздята отсюда:\
+https://www.youtube.com/watch?v=n4tbdFD18vs
