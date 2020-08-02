@@ -1,9 +1,10 @@
-# import all
-import mp.VideoLoader, mp.VideoConverter
+import mp.VideoConverter
+import mp.VideoLoader
 
 
 def get_video_path(path=None, name=None):
     # load by loader-downloader
+    # videopath = 'https://www.youtube.com/xxx'
     # or already obtained video
     # videopath = 'path/to/vid.mp4'
     if not path or 'https:' in path:
@@ -12,11 +13,14 @@ def get_video_path(path=None, name=None):
         return path
 
 
-videopath = get_video_path('здесь путь до видео')
+def convert_replace_t_x(path):
+    """path = 'path/to/vid.mp4avi'"""
+    return mp.VideoConverter.replace_t_x_axis(path)
+
+
+videopath = get_video_path()
 print(videopath)
 
 # directly convertation
-# convert
-
-
-# save output
+out = convert_replace_t_x(videopath)
+print(out)

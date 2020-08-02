@@ -1,58 +1,67 @@
-import cv2, numpy as np
+import cv2
+import numpy
+import os
 
-print('asdf')
-#convert#convert#convert
-#convert#convert
-#convert
 
-#output
-
-'''
-#old version need to ref
-import cv2, numpy as np
-# VEEEEEERYYY SLOWWWW
-def take_v_writer():
-    # type(out) <class 'cv2.VideoWriter'>
-    out = cv2.VideoWriter(name_of_out_video, fourcc, 60.0, (Y_OUT,X_OUT))
-    return out
-
-def take_v_capture():
-    # type(vcap) <class 'cv2.VideoCapture'>
-    vidcap = cv2.VideoCapture(direct_of_input_video)
-    return vidcap
-
-def record_one_new(yindex):
-    success, frame = vin.read()
-    recordframe = frame[0:X_OUT,0:1]
-    while(success):
-        # X_OUT need to replace with x_in!
-        recordframe = np.concatenate((recordframe,frame[0:X_OUT,yindex:yindex+1]),axis=1)
-        success, frame = vin.read()
-    return recordframe
-
+# кодек, нужен для записи
 fourcc = cv2.VideoWriter_fourcc(*'XVID')
-name_of_out_video = 'rmdance.avi'
-direct_of_input_video = 'C:/Users/Dell/Desktop/py/openCv/t(h)_converter/RMdance.MP4'
+# разрешение выходного видео
 X_OUT = 480
 Y_OUT = 640
+FPS_OUT = 60.0
+path_of_out_video = os.path.join(os.getcwd(), '../', 'output.avi')
+# путь к исходному видеофайлу
+# direct_of_input_video = None
 
-vout = take_v_writer()
-# vout = cv2.VideoWriter(name_of_video, fourcc, 60.0, (Y_OUT,X_OUT))
 
-for yindex in range(Y_OUT):
-    vin = take_v_capture()
-    # vin = cv2.VideoCapture('C:/Users/Dell/Desktop/py/openCv/0002.avi')
-    recordframe = []
-    recordframe = record_one_new(yindex)
+def take_v_writer():
+    # cv2.VideoWriter(filename, fourcc, fps, frameSize)
+    return cv2.VideoWriter(path_of_out_video, fourcc, FPS_OUT, (Y_OUT, X_OUT))
 
-    resized = cv2.resize(recordframe,(Y_OUT,X_OUT))
-    vout.write(resized)
-    print(yindex)
-    #cv2.imshow('ads',resized)
-    #cv2.waitKey(0)
+
+def take_v_capture(direct_of_input_video):
+    return cv2.VideoCapture(direct_of_input_video)
+
+
+def get_array_video(video_input):
+    array = []
+    # for i in range (1280//20):
+    #     arrays.append(numpy.array([]))
+    #     print('{} created'.format(i))
+    success, frame = video_input.read()
+    counter = 0
+    while success:
+        array.append(frame)
+        success, frame = video_input.read()
+        counter += 1
+        if not counter % 10:
+            print(counter)
+    print('get {} frames'.format(counter))
+    return array
+
+
+def replace_t_x(direct_of_input_video):
+    vin = take_v_capture(direct_of_input_video)
+    success, frame = vin.read()
+    # get size from first frame
+    vin_height, vin_width, channels = numpy.shape(frame)
+    print('input {}x{}'.format(vin_width, vin_height))
+    video_array = get_array_video(vin)
+    # close input video
     vin.release()
-haha = input('END PRESS ENTER')
-vout.release()
+
+    vout = take_v_writer()
+    for y_index in range(vin_width):
+        recordframe = video_array[0][0:vin_height, 0:1]
+        for i in range(len(video_array)):
+            recordframe = numpy.concatenate((recordframe, video_array[i][:, y_index:y_index + 1]), axis=1)
+        resized = cv2.resize(recordframe, (Y_OUT, X_OUT))
+        vout.write(resized)
+    vout.release()
+
+
+replace_t_x(os.path.join(os.getcwd(), '../', 'downloadname.mp4'))
 cv2.destroyAllWindows()
 
-'''
+# add process bar
+# add interface
